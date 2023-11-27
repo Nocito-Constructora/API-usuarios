@@ -1,0 +1,10 @@
+[
+  {
+    "nombre": "Jeremias",
+    "apellido": "Oyhamburo",
+    "email": "jeremias@mail.com",
+    "telefono": 1132438672,
+    "contrasenia": "asd123",
+    "id": 1701094101126
+  }
+]
