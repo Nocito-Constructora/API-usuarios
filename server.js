@@ -1,10 +1,15 @@
 const CRUD = require("./CRUD");
 const express = require("express");
+const cors = require("cors");
 
 const PORT = 8080;
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// Habilitar CORS con la biblioteca cors
+app.use(cors());
+
 const server = app.listen(process.env.PORT || PORT, () =>
   console.log(`Server listening on PORT ${PORT}`)
 );
