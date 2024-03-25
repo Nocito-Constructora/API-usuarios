@@ -1,63 +1,88 @@
-API de Usuarios
+# API de Usuarios
 
 Esta API permite realizar operaciones CRUD (Crear, Leer, Actualizar, Eliminar) relacionadas con usuarios almacenados en un archivo de texto.
-Configuración
 
-    Puerto: 8080
-    Formato de datos esperado: JSON
+## Configuración
 
-Rutas Disponibles
-GET /usuarios
+- Puerto: `8080`
+- Formato de datos esperado: JSON
 
-    Descripción: Obtiene todos los usuarios almacenados.
-    Método HTTP: GET
-    Respuesta Exitosa: Lista de usuarios.
-    Ejemplo de Uso: curl http://localhost:8080/usuarios
+## Rutas Disponibles
 
-POST /usuarios/signup
+### GET /usuarios
 
-    Descripción: Registra un nuevo usuario.
-    Método HTTP: POST
-    Datos Requeridos:
-        nombre (string): Nombre del usuario.
-        apellido (string): Apellido del usuario.
-        email (string): Correo electrónico del usuario.
-        telefono (number): Número de teléfono del usuario.
-        contrasenia (string): Contraseña del usuario.
-    Respuesta Exitosa: Detalles del usuario creado.
-    Ejemplo de Uso: curl -X POST -H "Content-Type: application/json" -d '{"nombre":"Ejemplo","apellido":"Ejemplo","email":"ejemplo@example.com","telefono":1234567890,"contrasenia":"password"}' http://localhost:8080/usuarios/signup
+- **Descripción**: Obtiene todos los usuarios almacenados.
+- **Método HTTP**: GET
+- **Respuesta Exitosa**: Lista de usuarios.
+- **Ejemplo de Uso**: `curl http://localhost:8080/usuarios`
 
-POST /usuarios/signin
+### POST /usuarios/signup
 
-    Descripción: Inicia sesión de un usuario existente.
-    Método HTTP: POST
-    Datos Requeridos:
-        email (string): Correo electrónico del usuario.
-        contrasenia (string): Contraseña del usuario.
-    Respuesta Exitosa: Detalles del usuario encontrado.
-    Ejemplo de Uso: curl -X POST -H "Content-Type: application/json" -d '{"email":"ejemplo@example.com","contrasenia":"password"}' http://localhost:8080/usuarios/signin
+- **Descripción**: Registra un nuevo usuario.
+- **Método HTTP**: POST
+- **Datos Requeridos**:
+  - `nombre` (string): Nombre del usuario.
+  - `apellido` (string): Apellido del usuario.
+  - `email` (string): Correo electrónico del usuario.
+  - `telefono` (number): Número de teléfono del usuario.
+  - `contrasenia` (string): Contraseña del usuario.
+- **Respuesta Exitosa**: Detalles del usuario creado.
+- **Ejemplo de Uso**: `curl -X POST -H "Content-Type: application/json" -d '{"nombre":"Ejemplo","apellido":"Ejemplo","email":"ejemplo@example.com","telefono":1234567890,"contrasenia":"password"}' http://localhost:8080/usuarios/signup`
 
-PUT /usuarios/:id
+### POST /usuarios/signin
 
-    Descripción: Actualiza un usuario existente por su ID.
-    Método HTTP: PUT
-    Parámetros de Ruta: id (string): Identificador del usuario a actualizar.
-    Datos Requeridos: Datos actualizados del usuario.
-    Respuesta Exitosa: Detalles del usuario actualizado.
-    Ejemplo de Uso: curl -X PUT -H "Content-Type: application/json" -d '{"nombre":"NuevoNombre","apellido":"NuevoApellido"}' http://localhost:8080/usuarios/1
+- **Descripción**: Inicia sesión de un usuario existente.
+- **Método HTTP**: POST
+- **Datos Requeridos**:
+  - `email` (string): Correo electrónico del usuario.
+  - `contrasenia` (string): Contraseña del usuario.
+- **Respuesta Exitosa**: Detalles del usuario encontrado.
+- **Ejemplo de Uso**: `curl -X POST -H "Content-Type: application/json" -d '{"email":"ejemplo@example.com","contrasenia":"password"}' http://localhost:8080/usuarios/signin`
 
-DELETE /usuarios/:id
+### PUT /usuarios/:id
 
-    Descripción: Elimina un usuario por su ID.
-    Método HTTP: DELETE
-    Parámetros de Ruta: id (string): Identificador del usuario a eliminar.
-    Respuesta Exitosa: Mensaje de confirmación de eliminación.
-    Ejemplo de Uso: curl -X DELETE http://localhost:8080/usuarios/1
+- **Descripción**: Actualiza un usuario existente por su ID.
+- **Método HTTP**: PUT
+- **Parámetros de Ruta**: `id` (string): Identificador del usuario a actualizar.
+- **Datos Requeridos**: Datos actualizados del usuario.
+- **Respuesta Exitosa**: Detalles del usuario actualizado.
+- **Ejemplo de Uso**: `curl -X PUT -H "Content-Type: application/json" -d '{"nombre":"NuevoNombre","apellido":"NuevoApellido"}' http://localhost:8080/usuarios/1`
 
-GET /usuarios/:id
+### DELETE /usuarios/:id
 
-    Descripción: Obtiene un usuario por su ID.
-    Método HTTP: GET
-    Parámetros de Ruta: id (string): Identificador del usuario a obtener.
-    Respuesta Exitosa: Detalles del usuario solicitado.
-    Ejemplo de Uso: curl http://localhost:8080/usuarios/1
+- **Descripción**: Elimina un usuario por su ID.
+- **Método HTTP**: DELETE
+- **Parámetros de Ruta**: `id` (string): Identificador del usuario a eliminar.
+- **Respuesta Exitosa**: Mensaje de confirmación de eliminación.
+- **Ejemplo de Uso**: `curl -X DELETE http://localhost:8080/usuarios/1`
+
+### GET /usuarios/:id
+
+- **Descripción**: Obtiene un usuario por su ID.
+- **Método HTTP**: GET
+- **Parámetros de Ruta**: `id` (string): Identificador del usuario a obtener.
+- **Respuesta Exitosa**: Detalles del usuario solicitado.
+- **Ejemplo de Uso**: `curl http://localhost:8080/usuarios/1`
+
+### POST /usuarios/upload
+
+- **Descripción**: Sube una imagen de perfil para un usuario.
+- **Método HTTP**: POST
+- **Datos Requeridos**: Imagen a subir.
+- **Respuesta Exitosa**: Mensaje de confirmación de subida de imagen.
+- **Ejemplo de Uso**: `curl -X POST -F "imagen=@/path/to/image.jpg" http://localhost:8080/usuarios/upload`
+
+### GET /imagenes
+
+- **Descripción**: Obtiene la lista de todas las imágenes de usuarios disponibles.
+- **Método HTTP**: GET
+- **Respuesta Exitosa**: Lista de URL de imágenes de usuarios.
+- **Ejemplo de Uso**: `curl http://localhost:8080/imagenes`
+
+### GET /usuarios/imagenes/:filename
+
+- **Descripción**: Obtiene una imagen de usuario por su nombre de archivo.
+- **Método HTTP**: GET
+- **Parámetros de Ruta**: `filename` (string): Nombre de archivo de la imagen.
+- **Respuesta Exitosa**: La imagen solicitada.
+- **Ejemplo de Uso**: `curl http://localhost:8080/usuarios/imagenes/nombre_de_la_imagen.jpg`

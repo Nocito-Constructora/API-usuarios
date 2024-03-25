@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Subir y Mostrar Imágenes</title>
+  </head>
+  <body>
+    <h2>Subir Imagen</h2>
+    <form id="uploadForm" enctype="multipart/form-data">
+      <input type="file" name="imagen" id="imagenInput" accept="image/*" />
+      <button type="submit">Subir Imagen</button>
+    </form>
+
+    <h2>Imágenes Subidas</h2>
+    <div id="imagenesContainer"></div>
+
+    <script>
+      // Función para mostrar las imágenes
+      function mostrarImagenes(imagenes) {
+        const imagenesContainer = document.getElementById("imagenesContainer");
+
+        imagenes.forEach((imagen) => {
+          const img = document.createElement("img");
+          img.src = `http://localhost:8080${imagen.url}`;
+          img.style.width = "200px";
+          imagenesContainer.appendChild(img);
+        });
+      }
+
+      // Función para cargar y mostrar las imágenes ya subidas
+      function cargarImagenes() {
+        fetch("http://localhost:8080/imagenes")
+          .then((response) => response.json())
+          .then((data) => {
+            mostrarImagenes(data.imagenes);
+          })
+          .catch((error) => {
+            console.error("Error al cargar las imágenes:", error);
+          });
+      }
+
+      document
+        .getElementById("uploadForm")
+        .addEventListener("submit", function (event) {
+          event.preventDefault();
+          const formData = new FormData();
+          const imagenInput = document.getElementById("imagenInput");
+          formData.append("imagen", imagenInput.files[0]);
+
+          fetch("http://localhost:8080/usuarios/upload", {
+            method: "POST",
+            body: formData,
+          })
+            .then((response) => {
+              if (!response.ok) {
+                throw new Error("Error al subir la imagen");
+              }
+              return response.json();
+            })
+            .then((data) => {
+              console.log("Imagen subida exitosamente:", data);
+              // Luego de subir la imagen, actualiza la lista de imágenes
+              cargarImagenes();
+            })
+            .catch((error) => {
+              console.error("Error:", error);
+              // Manejo de errores, muestra un mensaje al usuario, etc.
+            });
+        });
+
+      // Al cargar la página, carga y muestra las imágenes ya subidas
+      cargarImagenes();
+    </script>
+  </body>
+</html>

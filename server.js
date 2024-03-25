@@ -1,6 +1,9 @@
 const CRUD = require("./CRUD");
 const express = require("express");
 const cors = require("cors");
+const multer = require("multer");
+const fs = require("fs");
+const path = require("path");
 
 const PORT = 8080;
 const app = express();
@@ -9,6 +12,17 @@ app.use(express.urlencoded({ extended: true }));
 
 // Habilitar CORS con la biblioteca cors
 app.use(cors());
+
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "./db/images/");
+  },
+  filename: function (req, file, cb) {
+    cb(null, Date.now() + "-" + file.originalname);
+  },
+});
+
+const upload = multer({ storage: storage });
 
 const server = app.listen(process.env.PORT || PORT, () =>
   console.log(`Server listening on PORT ${PORT}`)
@@ -108,4 +122,37 @@ app.get("/usuarios/:id", async (req, res) => {
   } else {
     res.send({ message: "usuario no encontrado" });
   }
+});
+
+app.post("/usuarios/upload", upload.single("imagen"), (req, res) => {
+  if (!req.file) {
+    return res.status(400).send({ message: "No se ha subido ninguna imagen" });
+  }
+
+  // Aquí puedes realizar cualquier lógica adicional, como guardar la ruta del archivo en la base de datos
+
+  res.status(200).send({ message: "Imagen subida correctamente" });
+});
+
+app.get("/imagenes", (req, res) => {
+  const directoryPath = path.join(__dirname, "db/images");
+
+  fs.readdir(directoryPath, (err, files) => {
+    if (err) {
+      return res
+        .status(500)
+        .json({ error: "Error al leer el directorio de imágenes" });
+    }
+
+    const imagenes = files.map((file) => {
+      return { url: `/usuarios/imagenes/${file}` };
+    });
+    res.json({ imagenes });
+  });
+});
+
+app.get("/usuarios/imagenes/:filename", (req, res) => {
+  const fileName = req.params.filename;
+  const filePath = path.join(__dirname, "db/images", fileName);
+  res.sendFile(filePath);
 });
